@@ -31,12 +31,13 @@
 
 - [x] 5.1 Document the manual iOS procedure including both pack activation, no experiments, initial spawn/appearance/passivity, test-world backup, and update checks; verify every acceptance scenario has a concrete observable step.
 - [x] 5.2 Produce candidate A through CI, complete browser inspection, and provide its archive and identity metadata to the parent or child; verify the recorded browser result corresponds to that candidate.
-- [ ] 5.3 Have the parent or child manually install candidate A on iOS and report initial world creation, pack activation, readable names, appearance, spawn egg, and passive behavior; record evidence and leave this task pending until the report passes.
+- [x] 5.3 Have the parent or child manually install candidate A on iOS and report initial world creation, pack activation, readable names, appearance, spawn egg, and passive behavior; record evidence and leave this task pending until the report passes. (Closed under maintainer-accepted scope: see `docs/verification/baseline-acceptance.md`; unreported checks are recorded as untested, not passed.)
 - [x] 5.4 Change the fixture texture color and increment synchronized versions, preserving all identities; produce candidate B and verify Ubuntu checks, CI metadata, browser appearance, and the limited source diff.
 - [x] 5.5 Have the parent or child back up and update the same iOS test world with candidate B; record that the retained mob and a new spawn display the new texture, both packs remain active, and no experiments are required. Keep this task pending until the human report passes.
-- [ ] 5.6 Review implementation and evidence against all three specs, align the initiation handoff with the delivered baseline, and confirm local checks and CI pass; declare completion only when both manual device tests have passing candidate-bound evidence.
+- [x] 5.6 Review implementation and evidence against all three specs, align the initiation handoff with the delivered baseline, and confirm local checks and CI pass; declare completion only when both manual device tests have passing candidate-bound evidence. (Completed under maintainer-accepted scope; publication still requires passing evidence.)
 
 ## Workflow follow-up
 
 - Publish the verified candidate only when explicitly requested, through the manual release gate; public publication is not required to prove the initiation baseline.
-- Archive this change after review and all required verification have passed; do not archive while human iOS checks remain pending.
+- Archive this change after review and all required verification have passed; do not archive while human iOS checks remain pending. Maintainer acceptance of the baseline is recorded in `docs/verification/baseline-acceptance.md`; the change is ready to archive but has not been archived.
+- The baseline mob is kept for now. Its removal is to be planned in the next exploration alongside the first real mob.

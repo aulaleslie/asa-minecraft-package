@@ -1,7 +1,8 @@
 # Baseline review against specs (2026-11-01)
 
-Status: **not ready to close** until the gaps below are confirmed by the
-owner. Nothing here is invented; human results are as reported.
+Status: **ready to archive** under maintainer-accepted scope (see
+[`baseline-acceptance.md`](./baseline-acceptance.md)); the gaps below are
+recorded as untested, not passed. Nothing here is invented; human results are as reported.
 
 ## Evidence summary
 

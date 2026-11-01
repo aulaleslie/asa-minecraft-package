@@ -34,6 +34,10 @@ GitHub Actions SHALL run the local validation and packaging entry points for pus
 ### Requirement: Human iOS acceptance
 Baseline completion SHALL require manual initial-install and existing-world-update checks performed by the parent or child. Evidence SHALL identify tester, date, device, Minecraft version, candidate revisions, versions, checksums, browser results, and device results. Missing or failed checks SHALL leave acceptance pending.
 
+#### Scenario: Maintainer accepts baseline with untested checks
+- **WHEN** the maintainer explicitly accepts the baseline for development closure with specific checks recorded as untested
+- **THEN** the change may be closed on that recorded scope, the untested checks are not reported as passed, and public publication still requires passing evidence for the exact candidate
+
 #### Scenario: Automation succeeds but device testing is pending
 - **WHEN** Ubuntu validation, browser inspection, and packaging pass without reported iOS results
 - **THEN** the baseline remains incomplete and publication is blocked
