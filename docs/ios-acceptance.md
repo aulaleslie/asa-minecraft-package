@@ -16,8 +16,8 @@ Candidate A's human-reported result is in
    candidate A identity fields.
 2. On the iOS device, import that `.mcaddon` into Minecraft. Create a new
    disposable test world.
-3. Activate both **Sinbad Baseline Behavior Pack** and **Sinbad Baseline
-   Resource Pack** in the world's pack settings. Do not enable experiments.
+3. Activate both **Sinbad Selection - Behavior** and **Sinbad Selection -
+   Resources** in the world's pack settings. Do not enable experiments.
 4. Enter Creative mode, find the baseline mob spawn egg, and spawn the mob.
    Record whether its localized name is readable, its appearance and texture
    render, and it remains passive when approached and hit.

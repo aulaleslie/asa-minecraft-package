@@ -28,16 +28,21 @@ version-independent tests.
 
 ## Update test (same world as candidate A)
 
+This test must run in Minecraft Bedrock on the iPhone 15. Minecraft on macOS is
+Java Edition and cannot import this `.mcaddon`; a Mac browser preview is only a
+visual check.
+
 1. **Back up first.** In Minecraft: Play, tap the pencil next to the candidate A
    world, scroll down, and choose **Export World** (save a `.mcworld` to Files or
-   iCloud). Also **Duplicate** the world if offered. Do not test on a different
-   world.
-2. Note a mob from candidate A that still exists in the world (stay near it, or
-   find it before updating).
+   iCloud). If Export World is not available, use **Copy World** instead and
+   keep the copy untouched until the test is done. Do not test on a different
+   world, and make the backup before importing candidate B.
+2. Pick an existing candidate A mob and name-tag it so it cannot despawn. Do
+   this before updating, and stay in the same world.
 3. Download `candidate.zip` from the run above, unzip, check the `.mcaddon`
    SHA-256 matches the table, and open it in Minecraft to import.
 4. Open the same world. Confirm both Sinbad packs are still active and no
    experiments are enabled.
-5. Check that the existing mob and a new one spawned with the spawn egg both
+5. Check that the existing mob (which must survive the update) and a new one spawned with the spawn egg both
    show the new orange-brown texture and cow shape.
 6. Report the results. Only those you actually observe are recorded.
