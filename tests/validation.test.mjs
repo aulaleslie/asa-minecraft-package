@@ -115,7 +115,7 @@ test("rejects pack identity drift", () => {
 test("rejects version mismatches", () => {
   withFixture((dir) => {
     mutateJson(dir, "behavior_pack/manifest.json", (manifest) => {
-      manifest.modules[0].version = [0, 1, 1];
+      manifest.modules[0].version = [9, 9, 9];
     });
     assert.match(inspectProject(dir).errors.join("\n"), /module version does not match/);
   });

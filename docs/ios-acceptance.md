@@ -6,6 +6,9 @@ SHA-256, and both pack header UUIDs in
 [`evidence-template.json`](./verification/evidence-template.json). Never
 describe an unperformed or failed check as passing.
 
+Candidate A's human-reported result is in
+[`candidate-a-ios-report.md`](./verification/candidate-a-ios-report.md).
+
 ## Candidate A: initial installation
 
 1. Download both files from the successful default-branch Candidate workflow
