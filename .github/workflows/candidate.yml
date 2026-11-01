@@ -1,0 +1,39 @@
+name: Candidate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install pinned npm
+        run: npm install --global npm@10.9.9
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate, test, and package
+        run: npm run candidate
+
+      - name: Upload candidate archive and metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: candidate
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30

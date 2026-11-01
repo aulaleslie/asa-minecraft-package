@@ -1,0 +1,20 @@
+{
+  "name": "asa-minecraft-package",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sinbad Selection Minecraft Bedrock add-on",
+  "packageManager": "npm@10.9.9",
+  "engines": {
+    "node": "22.23.4"
+  },
+  "scripts": {
+    "validate": "node tools/validate.mjs",
+    "test": "node --test",
+    "version:set": "node tools/set-version.mjs",
+    "package": "node tools/package-addon.mjs",
+    "candidate": "npm run validate && npm test && npm run package"
+  },
+  "devDependencies": {
+    "@minecraft/creator-tools": "0.20.0"
+  }
+}

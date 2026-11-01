@@ -1,0 +1,25 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "sinbad:baseline_mob",
+      "min_engine_version": "1.8.0",
+      "materials": {
+        "default": "cow"
+      },
+      "textures": {
+        "default": "textures/entity/baseline_mob"
+      },
+      "geometry": {
+        "default": "geometry.sinbad.baseline_mob"
+      },
+      "render_controllers": [
+        "controller.render.sinbad_baseline_mob"
+      ],
+      "spawn_egg": {
+        "base_color": "#1B6870",
+        "overlay_color": "#E9E1C5"
+      }
+    }
+  }
+}

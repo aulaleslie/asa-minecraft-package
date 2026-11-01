@@ -1,0 +1,23 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Sinbad Selection - Behavior",
+    "description": "Behavior Pack for Sinbad Selection.",
+    "uuid": "d82f81a5-cec1-4e9d-8c34-19819a73db9c",
+    "version": [0, 1, 0],
+    "min_engine_version": [1, 26, 60]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "5944750f-6750-412a-aa16-b3f605da4ae1",
+      "version": [0, 1, 0]
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "8aa5ee10-fcca-4900-bab0-63e6c5cfb152",
+      "version": [0, 1, 0]
+    }
+  ]
+}

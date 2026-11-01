@@ -1,0 +1,196 @@
+name: Verified release
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_run_id:
+        description: Successful Candidate workflow run ID on the default branch
+        required: true
+        type: string
+      evidence_path:
+        description: Committed, candidate-bound evidence JSON path
+        required: true
+        default: docs/verification/evidence.json
+        type: string
+      publish:
+        description: Create a public GitHub release after all checks pass
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verified-release
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      revision: ${{ steps.trusted-run.outputs.revision }}
+      archive: ${{ steps.candidate.outputs.archive }}
+      version: ${{ steps.candidate.outputs.version }}
+      sha256: ${{ steps.candidate.outputs.sha256 }}
+    steps:
+      - name: Check out the selected default branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install pinned npm and project dependencies
+        run: |
+          npm install --global npm@10.9.9
+          npm ci
+
+      - name: Verify trusted candidate workflow run
+        id: trusted-run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.candidate_run_id }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          WORKFLOW_REF: ${{ github.ref }}
+        run: |
+          if [[ ! "$RUN_ID" =~ ^[0-9]+$ ]]; then
+            echo "candidate_run_id must be numeric." >&2
+            exit 1
+          fi
+          if [[ "$WORKFLOW_REF" != "refs/heads/$DEFAULT_BRANCH" ]]; then
+            echo "Release verification must be dispatched from the default branch." >&2
+            exit 1
+          fi
+          run_json="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID")"
+          branch="$(jq -r '.head_branch' <<<"$run_json")"
+          source_repo="$(jq -r '.head_repository.full_name // ""' <<<"$run_json")"
+          workflow_path="$(jq -r '.path' <<<"$run_json")"
+          event="$(jq -r '.event' <<<"$run_json")"
+          conclusion="$(jq -r '.conclusion' <<<"$run_json")"
+          head_sha="$(jq -r '.head_sha' <<<"$run_json")"
+          if [[ "$branch" != "$DEFAULT_BRANCH" || "$source_repo" != "$GITHUB_REPOSITORY" ||
+                "$workflow_path" != ".github/workflows/candidate.yml" ||
+                "$event" != "push" || "$conclusion" != "success" ||
+                ! "$head_sha" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "Run is not a successful trusted default-branch candidate." >&2
+            exit 1
+          fi
+          echo "revision=$head_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Download candidate artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: candidate
+          path: dist
+          run-id: ${{ inputs.candidate_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Validate archive, metadata, and human evidence
+        id: candidate
+        env:
+          EXPECTED_REVISION: ${{ steps.trusted-run.outputs.revision }}
+          EVIDENCE_PATH: ${{ inputs.evidence_path }}
+        run: |
+          if [[ "$EVIDENCE_PATH" != docs/verification/*.json || "$EVIDENCE_PATH" == *..* ]]; then
+            echo "Evidence must be a JSON file under docs/verification/." >&2
+            exit 1
+          fi
+          mapfile -t metadata_files < <(find dist -maxdepth 1 -type f -name '*.mcaddon.metadata.json' -print)
+          if [[ "${#metadata_files[@]}" -ne 1 ]]; then
+            echo "Expected exactly one candidate metadata file." >&2
+            exit 1
+          fi
+          metadata="${metadata_files[0]}"
+          node tools/validate-candidate.mjs "$metadata" \
+            --revision "$EXPECTED_REVISION" \
+            --evidence "$EVIDENCE_PATH"
+          node --input-type=module - "$metadata" >> "$GITHUB_OUTPUT" <<'NODE'
+          import fs from "node:fs";
+          const metadata = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
+          console.log(`archive=${metadata.archive}`);
+          console.log(`version=${metadata.version}`);
+          console.log(`sha256=${metadata.sha256}`);
+          NODE
+
+      - name: Preserve verified bytes for the publication job
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-release-candidate
+          path: |
+            dist/${{ steps.candidate.outputs.archive }}
+            dist/${{ steps.candidate.outputs.archive }}.metadata.json
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    if: ${{ inputs.publish }}
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - name: Check out the selected default branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install pinned npm and project dependencies
+        run: |
+          npm install --global npm@10.9.9
+          npm ci
+
+      - name: Download verified candidate bytes
+        uses: actions/download-artifact@v4
+        with:
+          name: verified-release-candidate
+          path: dist
+
+      - name: Re-verify candidate before publication
+        env:
+          EXPECTED_REVISION: ${{ needs.verify.outputs.revision }}
+          EXPECTED_ARCHIVE: ${{ needs.verify.outputs.archive }}
+          EXPECTED_SHA256: ${{ needs.verify.outputs.sha256 }}
+          EVIDENCE_PATH: ${{ inputs.evidence_path }}
+        run: |
+          metadata="dist/$EXPECTED_ARCHIVE.metadata.json"
+          node tools/validate-candidate.mjs "$metadata" \
+            --revision "$EXPECTED_REVISION" \
+            --evidence "$EVIDENCE_PATH"
+          actual_sha="$(node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).sha256)' "$metadata")"
+          if [[ "$actual_sha" != "$EXPECTED_SHA256" ]]; then
+            echo "Verified checksum changed between workflow jobs." >&2
+            exit 1
+          fi
+          echo "ARCHIVE=dist/$EXPECTED_ARCHIVE" >> "$GITHUB_ENV"
+          echo "TAG=v${{ needs.verify.outputs.version }}" >> "$GITHUB_ENV"
+
+      - name: Create GitHub release with the exact verified archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVISION: ${{ needs.verify.outputs.revision }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; refusing to replace it." >&2
+            exit 1
+          fi
+          gh release create "$TAG" "$ARCHIVE" "$ARCHIVE.metadata.json" \
+            --target "$SOURCE_REVISION" \
+            --title "asa-minecraft-package $TAG" \
+            --notes "Verified candidate. SHA-256: ${{ needs.verify.outputs.sha256 }}"

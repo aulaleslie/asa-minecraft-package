@@ -1,0 +1,30 @@
+{
+  "format_version": 1,
+  "namespace": "sinbad",
+  "release_version": "0.1.0",
+  "target_minecraft_version": "26.60",
+  "packs": {
+    "behavior": {
+      "manifest": "behavior_pack/manifest.json",
+      "header_uuid": "d82f81a5-cec1-4e9d-8c34-19819a73db9c",
+      "module_uuids": [
+        "5944750f-6750-412a-aa16-b3f605da4ae1"
+      ],
+      "version": [0, 1, 0]
+    },
+    "resource": {
+      "manifest": "resource_pack/manifest.json",
+      "header_uuid": "8aa5ee10-fcca-4900-bab0-63e6c5cfb152",
+      "module_uuids": [
+        "1a42a071-04f7-4cde-857c-2d16adce28a2"
+      ],
+      "version": [0, 1, 0]
+    }
+  },
+  "content_identifiers": [
+    "sinbad:baseline_mob"
+  ],
+  "geometry_identifiers": [
+    "geometry.sinbad.baseline_mob"
+  ]
+}

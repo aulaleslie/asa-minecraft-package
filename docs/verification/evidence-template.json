@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "tester_role": "",
+  "tested_at": "",
+  "device": "",
+  "minecraft_version": "26.60",
+  "candidate_a": {
+    "source_revision": "",
+    "version": "",
+    "archive": "",
+    "sha256": "",
+    "pack_uuids": {
+      "behavior": "",
+      "resource": ""
+    },
+    "browser_review": {
+      "status": "pending",
+      "date": "",
+      "result": ""
+    },
+    "ios_initial": {
+      "status": "pending",
+      "date": "",
+      "both_packs_active": false,
+      "experiments_required": true,
+      "readable_name": false,
+      "spawn_egg_passive": false,
+      "appearance": false,
+      "result": ""
+    }
+  },
+  "candidate_b": {
+    "source_revision": "",
+    "version": "",
+    "archive": "",
+    "sha256": "",
+    "pack_uuids": {
+      "behavior": "",
+      "resource": ""
+    },
+    "browser_review": {
+      "status": "pending",
+      "date": "",
+      "result": ""
+    },
+    "ios_update": {
+      "status": "pending",
+      "date": "",
+      "same_test_world": false,
+      "both_packs_active": false,
+      "experiments_required": true,
+      "retained_mob_new_texture": false,
+      "new_spawn_new_texture": false,
+      "result": ""
+    }
+  }
+}
