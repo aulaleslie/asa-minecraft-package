@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "skills": {
+    "create-block": {
+      "source": "Mojang/minecraft-creator-tools",
+      "sourceType": "github",
+      "skillPath": "plugins/minecraft/skills/create-block/SKILL.md",
+      "computedHash": "ee29ecfcb7a6881c83b570fc2928badb6ad0276bf2f50d9f295405555389fce3"
+    },
+    "create-item": {
+      "source": "Mojang/minecraft-creator-tools",
+      "sourceType": "github",
+      "skillPath": "plugins/minecraft/skills/create-item/SKILL.md",
+      "computedHash": "2a13f72ed0bc1748b82b75de4ff3b7da2d0243e64d34610cab060e781e666be4"
+    },
+    "create-mob": {
+      "source": "Mojang/minecraft-creator-tools",
+      "sourceType": "github",
+      "skillPath": "plugins/minecraft/skills/create-mob/SKILL.md",
+      "computedHash": "cb86c018034919a6a1e5ebf3e9992a0031aeadebbf9a941c770796c047a02cde"
+    },
+    "creator-tools-cli": {
+      "source": "Mojang/minecraft-creator-tools",
+      "sourceType": "github",
+      "skillPath": "plugins/minecraft/skills/creator-tools-cli/SKILL.md",
+      "computedHash": "c1c2e2faddaac65d75926960a8a8911daf62d6f1a0d9a8070121f514c1787e93"
+    },
+    "debug-addon": {
+      "source": "Mojang/minecraft-creator-tools",
+      "sourceType": "github",
+      "skillPath": "plugins/minecraft/skills/debug-addon/SKILL.md",
+      "computedHash": "e7321f1c117ad3a16c88389ed345236a8f112be2bc3cf7d80f0b8d31cb1f603b"
+    },
+    "design-model": {
+      "source": "Mojang/minecraft-creator-tools",
+      "sourceType": "github",
+      "skillPath": "plugins/minecraft/skills/design-model/SKILL.md",
+      "computedHash": "cdaa3b2f67fc20409df1920322fb32115b0c362c6442cada37fecd56da889e3b"
+    },
+    "grill-me": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/grill-me/SKILL.md",
+      "computedHash": "9cdbb4b8f7a3aeaef82e6230c9e823500d4a8a1214c726cf342cf9829d34fc7d"
+    },
+    "grilling": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/grilling/SKILL.md",
+      "computedHash": "e40cc1d348f6d935e28f1e24474302d7368f0a400429271a43b35fe154891dc5"
+    },
+    "skill-creator": {
+      "source": "openai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/.system/skill-creator/SKILL.md",
+      "computedHash": "c1f04920b03c2a412e1d0b90680dc10b6de64793db7daae7e4bf64535b9fdf75"
+    },
+    "threejs": {
+      "source": "mengto/skills",
+      "sourceType": "github",
+      "skillPath": "agent-skills/web-design/threejs/SKILL.md",
+      "computedHash": "4ad72664a1fa3569194a8c0dfe7fa09d6b1aea2e59363e93c9d663f0245c5194"
+    }
+  }
+}
