@@ -22,7 +22,7 @@
 
 ## 4. Candidate CI and publication gate
 
-- [ ] 4.1 Add push/pull-request candidate CI using the same local checks and packaging commands, preserving the Copilot workflow; verify a successful GitHub Actions run provides downloadable archive and metadata without creating a public release.
+- [x] 4.1 Add push/pull-request candidate CI using the same local checks and packaging commands, preserving the Copilot workflow; verify a successful GitHub Actions run provides downloadable archive and metadata without creating a public release.
 - [x] 4.2 Add an evidence template and validator for browser review and manual iOS results bound to candidate revision/version/checksum; verify absent, pending, failed, and mismatched records are rejected and a complete passing fixture is accepted.
 - [x] 4.3 Add the manually triggered release workflow to retrieve a successful trusted default-branch candidate, validate evidence and checksums, and publish its exact archive; verify missing/expired artifacts and mismatched evidence fail before publication, and a dry-run passing path preserves the tested checksum.
 - [x] 4.4 Document candidate downloads, artifact retention, manual evidence entry, and publication controls; verify a maintainer can identify the candidate to test and the matching evidence without relying on filename alone.
@@ -30,7 +30,7 @@
 ## 5. Human device verification and baseline acceptance
 
 - [x] 5.1 Document the manual iOS procedure including both pack activation, no experiments, initial spawn/appearance/passivity, test-world backup, and update checks; verify every acceptance scenario has a concrete observable step.
-- [ ] 5.2 Produce candidate A through CI, complete browser inspection, and provide its archive and identity metadata to the parent or child; verify the recorded browser result corresponds to that candidate.
+- [x] 5.2 Produce candidate A through CI, complete browser inspection, and provide its archive and identity metadata to the parent or child; verify the recorded browser result corresponds to that candidate.
 - [ ] 5.3 Have the parent or child manually install candidate A on iOS and report initial world creation, pack activation, readable names, appearance, spawn egg, and passive behavior; record evidence and leave this task pending until the report passes.
 - [ ] 5.4 Change the fixture texture color and increment synchronized versions, preserving all identities; produce candidate B and verify Ubuntu checks, CI metadata, browser appearance, and the limited source diff.
 - [ ] 5.5 Have the parent or child back up and update the same iOS test world with candidate B; record that the retained mob and a new spawn display the new texture, both packs remain active, and no experiments are required. Keep this task pending until the human report passes.
