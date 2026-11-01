@@ -17,3 +17,7 @@ Cosmic Anomaly acceptance SHALL require candidate-bound browser visual review an
 #### Scenario: Incomplete runtime proof
 - **WHEN** local checks or browser review pass but required device checks are missing or fail
 - **THEN** guardian acceptance remains pending and public publication remains blocked
+
+#### Scenario: Maintainer accepts guardian candidate with untested checks
+- **WHEN** the maintainer explicitly accepts the candidate for development closure with specific measurements, cases and browser limits recorded as untested
+- **THEN** the change may be closed on that recorded scope, untested checks are not reported as passed, the acceptance applies only to that exact candidate, and public publication still requires passing evidence for the exact candidate
