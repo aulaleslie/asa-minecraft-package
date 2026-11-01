@@ -32,8 +32,8 @@
 - [x] 5.1 Document the manual iOS procedure including both pack activation, no experiments, initial spawn/appearance/passivity, test-world backup, and update checks; verify every acceptance scenario has a concrete observable step.
 - [x] 5.2 Produce candidate A through CI, complete browser inspection, and provide its archive and identity metadata to the parent or child; verify the recorded browser result corresponds to that candidate.
 - [ ] 5.3 Have the parent or child manually install candidate A on iOS and report initial world creation, pack activation, readable names, appearance, spawn egg, and passive behavior; record evidence and leave this task pending until the report passes.
-- [ ] 5.4 Change the fixture texture color and increment synchronized versions, preserving all identities; produce candidate B and verify Ubuntu checks, CI metadata, browser appearance, and the limited source diff.
-- [ ] 5.5 Have the parent or child back up and update the same iOS test world with candidate B; record that the retained mob and a new spawn display the new texture, both packs remain active, and no experiments are required. Keep this task pending until the human report passes.
+- [x] 5.4 Change the fixture texture color and increment synchronized versions, preserving all identities; produce candidate B and verify Ubuntu checks, CI metadata, browser appearance, and the limited source diff.
+- [x] 5.5 Have the parent or child back up and update the same iOS test world with candidate B; record that the retained mob and a new spawn display the new texture, both packs remain active, and no experiments are required. Keep this task pending until the human report passes.
 - [ ] 5.6 Review implementation and evidence against all three specs, align the initiation handoff with the delivered baseline, and confirm local checks and CI pass; declare completion only when both manual device tests have passing candidate-bound evidence.
 
 ## Workflow follow-up
