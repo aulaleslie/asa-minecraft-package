@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sinbad Selection — Minecraft Bedrock Add-On repository initiation handoff" />
+  <title>Sinbad Selection — Repository Handoff</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1020;--panel:#131c30;--panel2:#17243a;--text:#eff5ff;--muted:#adbed2;--line:#2a3a53;--mint:#6be1b7;--blue:#89baff;--gold:#ffdb91;--radius:16px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font:15px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 85% -10%,#223c59 0,transparent 42%),var(--bg);color:var(--text)}a{color:var(--blue)}button{font:inherit;cursor:pointer}.layout{max-width:1200px;margin:auto;padding:32px 28px 80px}.top{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:22px}.brand{font-weight:800;letter-spacing:.09em;font-size:13px;color:var(--mint)}.top-actions{display:flex;gap:10px}.btn{border:1px solid var(--line);border-radius:10px;color:var(--text);background:var(--panel);padding:9px 14px}.btn:hover{border-color:var(--mint)}.btn.primary{background:var(--mint);border-color:var(--mint);color:#09221b;font-weight:700}.hero{padding:62px 0 42px}.eyebrow{color:var(--mint);letter-spacing:.15em;text-transform:uppercase;font-weight:800;font-size:12px}.hero h1{font-size:clamp(42px,6vw,76px);line-height:1.08;letter-spacing:-.05em;margin:13px 0 18px}.lead{font-size:19px;max-width:810px;color:var(--muted);line-height:1.6}.pillbox{display:flex;gap:9px;flex-wrap:wrap;margin-top:25px}.pill{padding:6px 11px;border:1px solid var(--line);background:#15243b;border-radius:999px;font-size:12px;font-weight:700;color:#d8e8fb}.columns{display:grid;grid-template-columns:230px minmax(0,1fr);gap:38px;align-items:start}.nav{position:sticky;top:20px;border:1px solid var(--line);background:rgba(19,28,48,.85);border-radius:var(--radius);padding:20px}.nav strong{color:var(--mint);font-size:12px;letter-spacing:.1em;text-transform:uppercase}.nav a{display:block;text-decoration:none;color:var(--muted);padding:8px 0;font-size:13px}.nav a:hover{color:var(--text)}section{margin:0 0 52px;scroll-margin-top:25px}h2{font-size:27px;line-height:1.25;letter-spacing:-.02em;margin:0 0 16px}h3{font-size:17px;margin:23px 0 9px}p{color:var(--muted);margin:10px 0 15px}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:23px;margin:16px 0}.card p:last-child{margin-bottom:0}.callout{border-left:3px solid var(--mint);padding:12px 18px;background:#14263a;color:#e5f9f1;border-radius:0 10px 10px 0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid .card{margin:0}.kicker{color:var(--mint);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:470px}td,th{padding:11px 15px;text-align:left;border-bottom:1px solid var(--line)}tr:last-child td{border:0}th{background:#1d2a40;color:var(--text);font-size:12px;text-transform:uppercase;letter-spacing:.05em}td{color:#cedcec}td:first-child{font-weight:600;color:#eff5ff}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{color:#c9f1e2}pre{background:#0a1526;border:1px solid #283950;border-radius:12px;padding:17px;overflow:auto;white-space:pre;line-height:1.55;font-size:13px;color:#d6e6fc}.flow{display:flex;flex-wrap:wrap;align-items:center;gap:9px}.step{background:var(--panel2);border:1px solid var(--line);padding:11px 13px;border-radius:10px;font-size:13px;font-weight:700}.arrow{color:var(--mint)}.small{font-size:13px;color:var(--muted)}.skill{border-top:1px solid var(--line);padding:16px 0}.skill:first-child{border:0;padding-top:0}.skill strong{font-size:16px}.skill p{margin:5px 0 9px}.prompt-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.prompt{white-space:pre-wrap;font-size:13px;max-height:690px;overflow:auto}.checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.checklist label{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px}.checklist input{accent-color:#6be1b7;margin-top:4px}.checklist label:has(input:checked){color:var(--muted);text-decoration:line-through;border-color:#2d695e}.note{color:var(--gold);font-size:13px}.footer{border-top:1px solid var(--line);padding-top:24px;color:var(--muted);font-size:13px}li{margin:7px 0;color:var(--muted)}strong{color:var(--text)}.tag{display:inline-block;border:1px solid #357363;color:#9df5ce;border-radius:100px;padding:2px 9px;font-size:11px;font-weight:800;margin-left:8px}@media(max-width:840px){.columns{display:block}.nav{position:static;display:flex;overflow:auto;gap:16px;padding:13px;margin-bottom:30px}.nav strong{display:none}.nav a{white-space:nowrap;padding:0}.grid,.checklist{grid-template-columns:1fr}.layout{padding:19px 16px 52px}.hero{padding:43px 0 30px}}@media print{*{color-adjust:exact;-webkit-print-color-adjust:exact}body{background:#fff;color:#151d25;font-size:11px}.layout{padding:0;max-width:none}.nav,.top-actions,.btn{display:none}.columns{display:block}.hero{padding:20px 0}.hero h1{font-size:38px}.lead,p,li,.small{color:#333}.card,pre,.step,.checklist label{background:#f6f8fb;color:#161c22;border-color:#ddd}h2,h3,strong,td:first-child{color:#111}.tablewrap,td,th{border-color:#ddd}th{background:#e8ecf2;color:#222}td{color:#222}pre{color:#1b2c35;white-space:pre-wrap}.prompt{max-height:none}section{break-inside:avoid}a{color:#1a4f8c}}
+  </style>
+</head>
+<body>
+<div class="layout">
+  <header class="top"><div class="brand">SINBAD SELECTION / PROJECT BRIEF</div><div class="top-actions"><button class="btn" onclick="window.print()">Print / Save PDF</button><a class="btn primary" href="#handoff">Go to AI Handoff ↓</a></div></header>
+  <div class="hero"><div class="eyebrow">Minecraft Bedrock Edition · Repository initiation</div><h1>Sinbad<br/>Selection<span style="color:var(--mint)">.</span></h1><p class="lead">One growing Minecraft Add-On, shaped by a child's drawings and ideas, developed with OpenSpec, Bedrock Creator tooling, AI coding agents and a browser-assisted testing workflow.</p><div class="pillbox"><span class="pill">Ubuntu + VS Code</span><span class="pill">Minecraft Bedrock / iOS</span><span class="pill">One .mcaddon</span><span class="pill">OpenSpec</span><span class="pill">GitHub Actions</span></div></div>
+  <div class="columns"><nav class="nav"><strong>Contents</strong><a href="#identity">01 · Identity & conventions</a><a href="#architecture">02 · Architecture</a><a href="#skills">03 · Skills & tools</a><a href="#workflow">04 · Creative workflow</a><a href="#preview">05 · Browser preview</a><a href="#handoff">06 · AI handoff prompt</a><a href="#milestone">07 · First milestone</a><a href="#references">08 · References</a></nav>
+  <main>
+    <section id="identity"><div class="kicker">01 / Foundation</div><h2>Identity & naming conventions</h2><p>Bedrock Add-Ons are not identified by an npm-style package name. They use <strong>UUID-based pack manifests</strong>; custom content is identified through <strong>namespaced identifiers</strong>.</p>
+    <div class="tablewrap"><table><thead><tr><th>Purpose</th><th>Convention</th></tr></thead><tbody><tr><td>Public name</td><td>Sinbad Selection</td></tr><tr><td>GitHub repository</td><td><code>asa-minecraft-package</code></td></tr><tr><td>npm package</td><td><code>asa-minecraft-package</code> (if used)</td></tr><tr><td>Content namespace</td><td><code>sinbad</code></td></tr><tr><td>Behavior Pack</td><td>Sinbad Selection - Behavior</td></tr><tr><td>Resource Pack</td><td>Sinbad Selection - Resources</td></tr><tr><td>Release artifact</td><td><code>asa-minecraft-package-vX.Y.Z.mcaddon</code></td></tr><tr><td>Release version</td><td><code>1.0.0</code> initial stable target</td></tr></tbody></table></div>
+    <h3>Example content identifiers</h3><pre>sinbad:cosmic_jellyfish
+sinbad:lightning_centipede
+sinbad:cosmic_sword
+sinbad:giant_pacific_raindrop</pre><div class="callout"><strong>Compatibility invariant:</strong> Generate separate UUIDs for the Behavior Pack, Resource Pack, and appropriate modules. Commit them once and retain them across updates. Increase manifest versions for new releases. Keep existing content identifiers stable.</div></section>
+    <section id="architecture"><div class="kicker">02 / Structure</div><h2>One bundle, modular internals</h2><div class="grid"><div class="card"><div class="kicker">Creative assets</div><h3>Reference → model</h3><p>Original drawings, descriptions, Blockbench geometry, textures and animations.</p></div><div class="card"><div class="kicker">Gameplay</div><h3>Behavior → abilities</h3><p>Bedrock JSON, items, mob behaviors and TypeScript where Script API is needed.</p></div><div class="card"><div class="kicker">Feedback</div><h3>Preview → verify</h3><p>Browser models and controlled simulations, plus real Bedrock runtime tests.</p></div><div class="card"><div class="kicker">Delivery</div><h3>Validate → bundle</h3><p>Automated tests, pack validation, versioning and one release artifact.</p></div></div>
+    <h3>Proposed layout (agent should validate and refine)</h3><pre>asa-minecraft-package/
+├── behavior_pack/
+├── resource_pack/
+├── src/                 # Optional authored TS / source modules
+├── assets/references/   # Original creative input
+├── tests/
+├── tools/
+├── openspec/
+├── .github/workflows/
+└── README.md</pre><p>Feature-centric development code is welcome, but the generated Behavior and Resource Packs must conform to Minecraft's required folder conventions. Do not add a new framework just to organize files.</p></section>
+    <section id="skills"><div class="kicker">03 / Tooling</div><h2>Skills worth investigating</h2><div class="card"><div class="skill"><strong>Mojang Minecraft Creator Tools <span class="tag">FIRST PRIORITY</span></strong><p>Official Mojang repository with creator tools and Bedrock-focused skill materials covering content creation, debugging, models and packaging. Check its current README for supported AI agent integrations and command syntax.</p><a href="https://github.com/Mojang/minecraft-creator-tools" target="_blank" rel="noopener noreferrer">github.com/Mojang/minecraft-creator-tools</a><pre>npx skills add Mojang/minecraft-creator-tools</pre></div><div class="skill"><strong>Three.js skill — optional</strong><p>Only install if an advanced custom browser viewer becomes necessary; evaluate the existing Mojang viewer first.</p><a href="https://skills.sh/mengto/skills/threejs" target="_blank" rel="noopener noreferrer">skills.sh/mengto/skills/threejs</a><pre>npx skills add mengto/skills --skill threejs</pre></div><div class="skill"><strong>Skill Creator — optional</strong><p>Create a Sinbad Selection-specific skill only after recurring design and review conventions emerge.</p><a href="https://skills.sh/openai/skills/skill-creator" target="_blank" rel="noopener noreferrer">skills.sh/openai/skills/skill-creator</a><pre>npx skills add openai/skills --skill skill-creator</pre></div></div><p class="note">Install commands and feature support are external and may change. Review the current repository instructions before executing, and audit third-party skills before granting access.</p><h3>Mojang CLI commands to verify in current documentation</h3><pre>npx -y @minecraft/creator-tools@latest view -i .
+npx -y @minecraft/creator-tools@latest validate -i .
+npx -y @minecraft/creator-tools@latest exportaddon -i . -o dist</pre><p>These are intended as investigation starting points, not proof that they work with an as-yet-uncreated project layout.</p></section>
+    <section id="workflow"><div class="kicker">04 / Collaboration</div><h2>From your son's picture to Minecraft</h2><div class="flow"><span class="step">Drawing / concept</span><span class="arrow">→</span><span class="step">Codex Explore</span><span class="arrow">→</span><span class="step">OpenSpec Proposal</span><span class="arrow">→</span><span class="step">Human approval</span><span class="arrow">→</span><span class="step">AI implementation</span><span class="arrow">→</span><span class="step">Preview & tests</span><span class="arrow">→</span><span class="step">Codex Review</span><span class="arrow">→</span><span class="step">Release</span></div><div class="card"><h3>Core working rules</h3><ul><li>Archive original art and distinguish the child's explicit ideas from AI interpretations.</li><li>Explore feasibility and identify whether behavior is JSON-native or needs Script API.</li><li>Create an OpenSpec proposal with acceptance criteria before implementation.</li><li>Have a human approve the proposal before an AI agent implements it.</li><li>Review the implementation against the proposal in the original Codex exploration session.</li><li>Archive the completed OpenSpec change only after verification.</li></ul></div></section>
+    <section id="preview"><div class="kicker">05 / Testing</div><h2>Fast browser feedback, real Bedrock verification</h2><p>On Ubuntu, preview geometry, textures, animation and isolated gameplay rules in the browser. The normal browser does <strong>not</strong> execute the Minecraft Bedrock game engine, so it cannot prove actual in-game AI, physics or iOS compatibility.</p><div class="tablewrap"><table><thead><tr><th>Test</th><th>Approach</th></tr></thead><tbody><tr><td>Mob appearance and textures</td><td>Blockbench / compatible browser viewer</td></tr><tr><td>Animation</td><td>Compatible model/animation viewer</td></tr><tr><td>Damage calculations and cooldowns</td><td>Automated TypeScript tests</td></tr><tr><td>Ability visualization</td><td>Custom simulation only if needed</td></tr><tr><td>Real AI, spawning, combat, interactions</td><td>Minecraft Bedrock runtime</td></tr><tr><td>iOS installation and existing-world compatibility</td><td>Actual Minecraft iOS device</td></tr></tbody></table></div></section>
+    <section id="handoff"><div class="kicker">06 / Copy to coding agent</div><div class="prompt-toolbar"><h2>Repository initiation prompt</h2><button class="btn primary" id="copyButton" onclick="copyPrompt()">Copy handoff</button></div><p>Use this as the agent's initial instruction. It asks for architectural exploration and an OpenSpec proposal, not immediate large-scale implementation.</p><pre class="prompt" id="agentPrompt"># Project Handoff: Sinbad Selection
+
+## Project overview
+Initiate a GitHub repository named `asa-minecraft-package`.
+
+Sinbad Selection is a continuously growing Minecraft Bedrock Edition Add-On featuring original mobs, bosses, skills, weapons, items, and gameplay content developed collaboratively by a parent and child. The child supplies creative ideas, descriptions, and reference images. The parent manages technical decisions, AI-assisted exploration, implementation, testing, and releases.
+
+Target Minecraft Bedrock Edition on iOS, including compatibility with existing worlds wherever feasible.
+
+## Architecture decisions
+1. One GitHub repository and one distributed `.mcaddon` per version.
+2. Bundle all content into a single growing Add-On.
+3. Public name: `Sinbad Selection`.
+4. Namespace for custom content: `sinbad`.
+5. Use TypeScript where Bedrock Script API logic is required; compile to compatible JavaScript.
+6. Maintain distinct Behavior Pack and Resource Pack structures with correct manifest dependencies.
+7. Preserve UUIDs, custom identifiers and compatibility across releases.
+8. Follow the current stable Minecraft Bedrock Creator documentation and relevant tooling.
+9. Use OpenSpec for change planning and specifications; do not introduce a competing spec framework.
+10. Prefer Mojang's existing Minecraft Creator Tools over unnecessary custom implementations.
+
+## Repository setup responsibilities
+Design and initialize the Git repository, `.gitignore`, Node.js tooling, Bedrock pack scaffolding, project structure, OpenSpec integration, AI coding agent guidance, relevant skills, local preview, automated validation, versioning, packaging, GitHub Actions and documentation.
+
+Choose a maintainable structure, explain important trade-offs and avoid unnecessary architectural complexity.
+
+## Pack identity
+- Repo: `asa-minecraft-package`
+- Public display name: `Sinbad Selection`
+- Content namespace: `sinbad`
+- Behavior Pack display name: `Sinbad Selection - Behavior`
+- Resource Pack display name: `Sinbad Selection - Resources`
+- Release artifact: `asa-minecraft-package-vX.Y.Z.mcaddon`
+
+Generate unique UUIDs for pack headers/modules, store them in version control, and preserve them across releases. Keep established content identifiers stable. Use synchronized manifest versions and appropriate pack dependencies.
+
+## Feature development lifecycle
+1. Creative intake: Preserve the original image/drawing and document intended features. Separate explicit user requirements from AI interpretations.
+2. Exploration: Use OpenSpec exploration to study the concept, repository capabilities, Bedrock constraints and implementation options. Distinguish JSON-native behavior, Script API logic and browser-only previews.
+3. Proposal: Generate an OpenSpec change proposal, design, acceptance criteria and implementation tasks. Cover appearance, behavior, abilities, spawning/acquisition, balance and compatibility where applicable. Require human approval.
+4. Implementation: Build against approved requirements, Bedrock Creator documentation and supported tooling. Organize authored files by feature while outputting correct Bedrock pack structures.
+5. Verification: Validate manifests, identifiers, models, textures, animations and scripts. Test portable logic independently. Preview in-browser, but never confuse simulations with actual Bedrock runtime testing.
+6. Review and release: Review against the approved proposal, run regression tests, package the single complete `.mcaddon`, publish approved releases and archive the OpenSpec change.
+
+## Browser preview strategy
+Investigate Mojang Minecraft Creator Tools' viewer/editor first. Provide fast local visualization of assets and animations. Introduce a custom Three.js playground only if justified by requirements official tooling cannot meet. Avoid creating a custom Bedrock game engine.
+
+## Automated verification
+Check malformed JSON/manifests, duplicate or invalid identifiers, missing assets/references, broken pack dependencies, TypeScript/test failures, accidental UUID changes, inconsistent versions and packaging failures. Distinguish structural validation from runtime verification.
+
+## Release strategy
+Use semantic versioning for project releases, generate one bundled Add-On, support local development builds without public GitHub releases and automate approved GitHub Releases. Preserve the full content catalog. Document safe iOS installation/updating and existing-world backup steps.
+
+## AI skills
+Evaluate Mojang Minecraft Creator Tools (including MCP and relevant Bedrock-focused skills) first. Add only skills that demonstrably improve the workflow. Keep OpenSpec the sole specification framework.
+
+## First milestone
+1. Valid, installable Sinbad Selection Add-On.
+2. Working Behavior Pack and Resource Pack.
+3. One simple custom mob as a proof of concept.
+4. Working local validation and packaging.
+5. Working browser model/asset preview.
+6. Working OpenSpec change lifecycle.
+7. GitHub Actions producing a downloadable `.mcaddon`.
+8. Successful actual Minecraft Bedrock test on a supported device.
+
+## Operating principles
+Preserve the child's creative intent, original source images and approved designs. Prefer verifiable behavior and backward compatibility. Avoid overengineering and speculative scope.
+
+## Immediate task
+Start by exploring current Mojang Bedrock documentation, Creator Tools and the likely repository architecture. Initialize or plan OpenSpec as appropriate, and produce a proposal for the initial project setup. Present key design decisions, technical constraints and phased milestones before implementing the full solution. Do not generate a large application or custom preview engine until existing tools have been evaluated.</pre></section>
+    <section id="milestone"><div class="kicker">07 / Definition of done</div><h2>Initial milestone checklist</h2><p>The first milestone is infrastructure-focused: one simple custom mob, not a complex boss battle. Check off the outcomes as they are completed.</p><div class="checklist" id="checks"><label><input type="checkbox"/>GitHub repository initialized</label><label><input type="checkbox"/>OpenSpec configured</label><label><input type="checkbox"/>Mojang Creator Tools evaluated/integrated</label><label><input type="checkbox"/>Behavior + Resource Packs created</label><label><input type="checkbox"/>UUID and namespace conventions established</label><label><input type="checkbox"/>One simple custom mob implemented</label><label><input type="checkbox"/>Browser preview demonstrated</label><label><input type="checkbox"/>Validation and packaging successful</label><label><input type="checkbox"/>GitHub Actions `.mcaddon` artifact generated</label><label><input type="checkbox"/>Installed/tested in real Minecraft Bedrock</label></div><p class="small" id="progressText">0 / 10 complete · Checklist state is not saved across refreshes.</p></section>
+    <section id="references"><div class="kicker">08 / Primary documentation</div><h2>References</h2><ul><li><a href="https://learn.microsoft.com/en-us/minecraft/creator/" target="_blank" rel="noopener noreferrer">Minecraft Creator documentation (Microsoft)</a></li><li><a href="https://github.com/Mojang/minecraft-creator-tools" target="_blank" rel="noopener noreferrer">Mojang Minecraft Creator Tools</a></li><li><a href="https://github.com/microsoft/minecraft-samples" target="_blank" rel="noopener noreferrer">Microsoft Minecraft Samples</a></li><li><a href="https://skills.sh/" target="_blank" rel="noopener noreferrer">skills.sh directory</a></li><li><a href="https://github.com/Fission-AI/OpenSpec" target="_blank" rel="noopener noreferrer">OpenSpec repository</a></li></ul><p class="small">This is an initiation brief, not a claim that specific tools or builds have already been run. Confirm commands and APIs against current upstream documentation during setup.</p></section>
+  </main></div><footer class="footer">Sinbad Selection · Growing world, one original creation at a time.</footer>
+</div>
+<script>
+  async function copyPrompt(){const el=document.getElementById('agentPrompt');const button=document.getElementById('copyButton');try{await navigator.clipboard.writeText(el.textContent);button.textContent='Copied!';setTimeout(()=>button.textContent='Copy handoff',1800)}catch(e){const selection=window.getSelection();const range=document.createRange();range.selectNodeContents(el);selection.removeAllRanges();selection.addRange(range);button.textContent='Select text to copy';}}
+  const checks=document.querySelectorAll('#checks input');const progress=document.getElementById('progressText');checks.forEach(c=>c.addEventListener('change',()=>{progress.textContent=`${[...checks].filter(c=>c.checked).length} / ${checks.length} complete · Checklist state is not saved across refreshes.`}));
+</script>
+</body>
+</html>
