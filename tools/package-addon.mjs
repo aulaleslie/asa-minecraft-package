@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { inspectAddonEntries, readZipEntries } from "./archive-utils.mjs";
+import { inspectAddonEntries, readZipEntries, writeZipEntries } from "./archive-utils.mjs";
 import { inspectProject } from "./project-validation.mjs";
 
 const toolRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -45,6 +45,16 @@ try {
       cli, "exportaddon", "-i", stage, "--of", archivePath, "--format", "mcaddon", "--json",
     ]);
 
+    // Creator Tools rewrites script dependency versions ("2.11.0" -> [2, 11, 0]),
+    // which Bedrock does not accept for module_name dependencies. Restore the
+    // exact source manifests inside the exported archive.
+    const exported = readZipEntries(fs.readFileSync(archivePath));
+    for (const name of exported.keys()) {
+      if (!name.endsWith("/manifest.json")) continue;
+      const packFolder = name.startsWith("behavior_pack") ? "behavior_pack" : name.startsWith("resource_pack") ? "resource_pack" : undefined;
+      if (packFolder) exported.set(name, fs.readFileSync(path.join(projectRoot, packFolder, "manifest.json")));
+    }
+    fs.writeFileSync(archivePath, writeZipEntries(exported));
     const archiveBuffer = fs.readFileSync(archivePath);
     const entries = readZipEntries(archiveBuffer);
     const archiveErrors = inspectAddonEntries(entries, version);

@@ -1,0 +1,39 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "sinbad:cosmic_anomaly",
+      "min_engine_version": "1.8.0",
+      "materials": {
+        "default": "entity_emissive"
+      },
+      "textures": {
+        "default": "textures/entity/cosmic_anomaly"
+      },
+      "geometry": {
+        "default": "geometry.sinbad.cosmic_anomaly"
+      },
+      "animations": {
+        "idle": "animation.sinbad.cosmic_anomaly.idle",
+        "fire": "animation.sinbad.cosmic_anomaly.fire",
+        "death": "animation.sinbad.cosmic_anomaly.death",
+        "controller": "controller.animation.sinbad.cosmic_anomaly"
+      },
+      "scripts": {
+        "animate": [
+          "controller"
+        ]
+      },
+      "sound_effects": {
+        "death": "mob.guardian.death"
+      },
+      "render_controllers": [
+        "controller.render.sinbad_cosmic_anomaly"
+      ],
+      "spawn_egg": {
+        "base_color": "#F5E27A",
+        "overlay_color": "#111111"
+      }
+    }
+  }
+}

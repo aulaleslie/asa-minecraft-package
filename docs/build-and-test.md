@@ -57,17 +57,11 @@ node_modules/.bin/mct view -i .
 ```
 
 It may start a local server and open a browser. Select **Entity type
-visuals/audio → baseline_mob → Preview** to inspect appearance. Browser preview
+visuals/audio → cosmic_anomaly → Preview** to inspect appearance (see
+[`cosmic-anomaly.md`](./cosmic-anomaly.md) for the opaque preview copy needed to see the ring). Browser preview
 is a visual check only; it does not prove Bedrock behavior or iOS compatibility.
-For this fixture, WebGL 2.0 is available but Creator Tools 0.20.0 reports that
-the model or texture for `sinbad:baseline_mob` could not be loaded when the
-client entity referenced the external vanilla `geometry.cow.v2`. The geometry is
-now bundled locally as `geometry.sinbad.baseline_mob` (attribution in
-[`third-party-notices.md`](./third-party-notices.md)). A human reported on
-2026-11-01 that the model and custom texture render in Chrome on Ubuntu
-([record](./verification/browser-review-2026-11-01.md)); this is not
-candidate-bound and does not cover iOS. See
-[`tooling.md`](./tooling.md) for the investigation.
+The earlier baseline-cow preview investigation is kept in
+[`tooling.md`](./tooling.md) for history.
 
 ## Validation and packaging details
 
@@ -75,8 +69,11 @@ candidate-bound and does not cover iOS. See
 Creator Tools `validate main` suite with JSON output and a temporary report
 directory, and adds narrow project checks for strict JSON parsing, UUID and
 version drift, dependencies, duplicate identifiers, custom textures, entity
-and controller links, bundled namespaced geometry (external references rejected), localization, and the
-baseline's no-natural-spawn/no-gameplay-script rules.
+and controller links, bundled namespaced geometry (external references rejected), animation,
+animation-controller, sound-effect and entity-property references, localization, the
+no-natural-spawn and no-native-attack rules, and the approved-script rule: only the files and
+`@minecraft/server` dependency recorded under `script` in `tools/identity-catalog.json` are
+allowed.
 
 The Creator Tools warning that a render controller is missing `uv_anim` is a
 known false positive: render controllers do not require that property. The
@@ -85,7 +82,7 @@ than ignored.
 
 `npm run package` uses Creator Tools export on a temporary folder containing
 only both packs. It inspects the ZIP entries, manifests, versions, dependencies,
-required mob assets, absence of development files, and checksum before writing
+required guardian assets and scripts, absence of development files, and checksum before writing
 the named archive and `.metadata.json` to `dist/`.
 
 ## Troubleshooting

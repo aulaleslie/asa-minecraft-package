@@ -1,5 +1,10 @@
 # Manual iOS acceptance
 
+> **Current subject:** Cosmic Anomaly. Use
+> [`verification/cosmic-anomaly-acceptance.md`](./verification/cosmic-anomaly-acceptance.md)
+> and the schema 2 evidence template. The baseline-cow procedure below is
+> retained as history only; its evidence does not accept a guardian candidate.
+
 Run these checks only with the exact CI candidate archive and metadata selected
 for the test. Record the candidate revision, version, archive filename,
 SHA-256, and both pack header UUIDs in

@@ -1,0 +1,110 @@
+{
+  "format_version": "1.26.10",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "sinbad:cosmic_anomaly",
+      "spawn_category": "misc",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "properties": {
+        "sinbad:firing": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "sinbad:dying": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        }
+      }
+    },
+    "component_groups": {
+      "sinbad:alive": {
+        "minecraft:behavior.move_towards_home_restriction": {
+          "priority": 4,
+          "speed_multiplier": 0.6
+        },
+        "minecraft:behavior.random_hover": {
+          "priority": 6,
+          "xz_dist": 4,
+          "y_dist": 2,
+          "hover_height": [
+            3,
+            6
+          ],
+          "interval": 60,
+          "speed_multiplier": 0.5
+        }
+      },
+      "sinbad:dying": {
+        "minecraft:damage_sensor": {
+          "triggers": [
+            {
+              "cause": "all",
+              "deals_damage": "no"
+            }
+          ]
+        }
+      }
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": [
+            "sinbad:alive"
+          ]
+        }
+      },
+      "sinbad:begin_dying": {
+        "remove": {
+          "component_groups": [
+            "sinbad:alive"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "sinbad:dying"
+          ]
+        },
+        "set_property": {
+          "sinbad:dying": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "cosmic_anomaly",
+          "mob"
+        ]
+      },
+      "minecraft:health": {
+        "value": 200,
+        "max": 200
+      },
+      "minecraft:collision_box": {
+        "width": 2.0,
+        "height": 6.0
+      },
+      "minecraft:physics": {
+        "has_gravity": false
+      },
+      "minecraft:can_fly": {},
+      "minecraft:movement": {
+        "value": 0.08
+      },
+      "minecraft:movement.hover": {},
+      "minecraft:navigation.hover": {
+        "can_path_over_water": true,
+        "avoid_damage_blocks": true
+      },
+      "minecraft:home": {
+        "restriction_type": "all_movement",
+        "restriction_radius": 8
+      },
+      "minecraft:persistent": {},
+      "minecraft:nameable": {}
+    }
+  }
+}

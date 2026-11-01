@@ -1,6 +1,6 @@
 {
   "name": "asa-minecraft-package",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
   "description": "Sinbad Selection Minecraft Bedrock add-on",
   "packageManager": "npm@10.9.9",
@@ -16,5 +16,6 @@
   },
   "devDependencies": {
     "@minecraft/creator-tools": "0.20.0"
-  }
+  },
+  "type": "module"
 }

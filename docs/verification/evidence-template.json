@@ -1,10 +1,7 @@
 {
-  "schema_version": 1,
-  "tester_role": "",
-  "tested_at": "",
-  "device": "",
-  "minecraft_version": "26.60",
-  "candidate_a": {
+  "schema_version": 2,
+  "subject": "sinbad:cosmic_anomaly",
+  "candidate": {
     "source_revision": "",
     "version": "",
     "archive": "",
@@ -12,46 +9,80 @@
     "pack_uuids": {
       "behavior": "",
       "resource": ""
-    },
-    "browser_review": {
-      "status": "pending",
-      "date": "",
-      "result": ""
-    },
-    "ios_initial": {
-      "status": "pending",
-      "date": "",
-      "both_packs_active": false,
-      "experiments_required": true,
-      "readable_name": false,
-      "spawn_egg_passive": false,
-      "appearance": false,
-      "result": ""
     }
   },
-  "candidate_b": {
-    "source_revision": "",
-    "version": "",
-    "archive": "",
-    "sha256": "",
-    "pack_uuids": {
-      "behavior": "",
-      "resource": ""
-    },
-    "browser_review": {
-      "status": "pending",
-      "date": "",
-      "result": ""
-    },
-    "ios_update": {
-      "status": "pending",
-      "date": "",
-      "same_test_world": false,
-      "both_packs_active": false,
-      "experiments_required": true,
-      "retained_mob_new_texture": false,
-      "new_spawn_new_texture": false,
-      "result": ""
-    }
+  "browser_review": {
+    "status": "pending",
+    "date": "",
+    "candidate_sha256": "",
+    "reviewed_archive_sha256": "",
+    "ring_visible": false,
+    "center_black": false,
+    "four_tentacles": false,
+    "texture_applied": false,
+    "luminosity_reviewed": false,
+    "idle_animation": false,
+    "firing_animation": false,
+    "death_animation": false,
+    "result": "",
+    "opaque_preview_is_silhouette_only": false,
+    "shipped_texture_viewer_result": ""
+  },
+  "ios_fresh_install": {
+    "status": "pending",
+    "date": "",
+    "tester_role": "",
+    "device": "",
+    "minecraft_version": "26.60",
+    "candidate_sha256": "",
+    "both_packs_active": false,
+    "experiments_required": true,
+    "readable_name": false,
+    "spawn_egg": false,
+    "appearance": false,
+    "animation": false,
+    "sound": false,
+    "guarding": false,
+    "health_200": false,
+    "targeting_exclusions": false,
+    "beam_damage_and_cooldown": false,
+    "beam_range_and_obstruction": false,
+    "bystanders_safe": false,
+    "death_sequence": false,
+    "no_drops": false,
+    "result": "",
+    "shipped_ring_visible": false,
+    "emissive_glow": false
+  },
+  "ios_persistence": {
+    "status": "pending",
+    "date": "",
+    "tester_role": "",
+    "device": "",
+    "minecraft_version": "26.60",
+    "candidate_sha256": "",
+    "backed_up_world": false,
+    "both_packs_active": false,
+    "experiments_required": true,
+    "save_reload": false,
+    "leave_and_return": false,
+    "anchor_persists": false,
+    "old_egg_absent": false,
+    "new_egg_works": false,
+    "saved_baseline_outcome": "",
+    "result": ""
+  },
+  "ios_combat": {
+    "status": "pending",
+    "date": "",
+    "tester_role": "",
+    "device": "",
+    "minecraft_version": "26.60",
+    "candidate_sha256": "",
+    "representative_combat": false,
+    "multi_guardian_scene": false,
+    "guardian_count": 0,
+    "responsive": false,
+    "result": ""
   }
 }

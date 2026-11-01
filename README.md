@@ -27,7 +27,8 @@ Selection - Resources**. Custom content uses the `sinbad` namespace. Pack and
 module UUIDs are committed identities: preserve them, and preserve existing
 content identifiers across updates. Keep both pack versions synchronized and
 the Behavior Pack dependency pointed at the Resource Pack's matching UUID and
-version.
+version. The first official mob is [Cosmic Anomaly](docs/cosmic-anomaly.md); the
+baseline cow is retired (back up worlds before updating).
 
 ## Development setup
 
@@ -56,7 +57,9 @@ Plan substantial content or behavior changes in OpenSpec before implementation.
 Review the proposal and requirements with the maintainer and obtain approval;
 then implement the tracked tasks, run the checks, and review the diff against
 the approved requirements. Do not introduce gameplay scripts, experiments, or
-a custom viewer unless an approved change calls for them.
+a custom viewer unless an approved change calls for them. The only approved
+gameplay script is the Cosmic Anomaly module recorded in
+`tools/identity-catalog.json`.
 
 Keep original drawings and other creative inputs unchanged. Record their source
 and preserve the child's stated requirements separately from AI-generated

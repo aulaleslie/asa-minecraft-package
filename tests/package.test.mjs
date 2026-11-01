@@ -30,44 +30,33 @@ test("package command creates one inspectable mcaddon with matching metadata and
     assert.deepEqual(inspectAddonEntries(entries, packageJson.version), []);
     assert.equal([...entries.keys()].some((file) => file.startsWith("tools/") || file.startsWith("docs/")), false);
 
+    const device = (extra) => ({
+      status: "passed", date: "2026-11-01", tester_role: "parent", device: "Synthetic evidence fixture",
+      minecraft_version: "26.60", candidate_sha256: metadata.sha256, result: "Synthetic pass fixture.", ...extra,
+    });
     const evidence = {
-      schema_version: 1,
-      tester_role: "parent",
-      tested_at: "2026-11-01",
-      device: "Synthetic evidence fixture",
-      minecraft_version: "26.60",
-      candidate_a: {
-        source_revision: "a".repeat(40),
-        version: "0.0.9",
-        archive: "asa-minecraft-package-v0.0.9.mcaddon",
-        sha256: "c".repeat(64),
-        pack_uuids: metadata.pack_uuids,
-        browser_review: { status: "passed", date: "2026-11-01", result: "Synthetic browser pass fixture." },
-        ios_initial: {
-          status: "passed",
-          date: "2026-11-01",
-          both_packs_active: true,
-          experiments_required: false,
-          readable_name: true,
-          spawn_egg_passive: true,
-          appearance: true,
-          result: "Synthetic initial-install pass fixture.",
-        },
+      schema_version: 2,
+      subject: "sinbad:cosmic_anomaly",
+      candidate: { ...metadata },
+      browser_review: {
+        status: "passed", date: "2026-11-01", candidate_sha256: metadata.sha256,
+        reviewed_archive_sha256: metadata.sha256, opaque_preview_is_silhouette_only: true,
+      shipped_texture_viewer_result: "Synthetic: viewer drew the shipped ring transparent.", result: "Synthetic browser pass fixture.",
+        ring_visible: true, center_black: true, four_tentacles: true, texture_applied: true,
+        luminosity_reviewed: true, idle_animation: true, firing_animation: true, death_animation: true,
       },
-      candidate_b: {
-        ...metadata,
-        browser_review: { status: "passed", date: "2026-11-01", result: "Synthetic browser pass fixture." },
-        ios_update: {
-          status: "passed",
-          date: "2026-11-01",
-          same_test_world: true,
-          both_packs_active: true,
-          experiments_required: false,
-          retained_mob_new_texture: true,
-          new_spawn_new_texture: true,
-          result: "Synthetic update pass fixture.",
-        },
-      },
+      ios_fresh_install: device({
+        both_packs_active: true, experiments_required: false, readable_name: true, spawn_egg: true,
+        appearance: true, shipped_ring_visible: true, emissive_glow: true, animation: true, sound: true, guarding: true, health_200: true,
+        targeting_exclusions: true, beam_damage_and_cooldown: true, beam_range_and_obstruction: true,
+        bystanders_safe: true, death_sequence: true, no_drops: true,
+      }),
+      ios_persistence: device({
+        backed_up_world: true, both_packs_active: true, experiments_required: false, save_reload: true,
+        leave_and_return: true, anchor_persists: true, old_egg_absent: true, new_egg_works: true,
+        saved_baseline_outcome: "Synthetic fixture outcome.",
+      }),
+      ios_combat: device({ representative_combat: true, multi_guardian_scene: true, guardian_count: 3, responsive: true }),
     };
     const evidencePath = path.join(output, "evidence.json");
     fs.writeFileSync(evidencePath, JSON.stringify(evidence));
@@ -109,6 +98,43 @@ test("package command creates one inspectable mcaddon with matching metadata and
   } finally {
     fs.rmSync(output, { recursive: true, force: true });
   }
+});
+
+test("package keeps the script dependency version a string and the manifests byte-identical", () => {
+  const output = fs.mkdtempSync(path.join(os.tmpdir(), "sinbad-package-manifest-"));
+  try {
+    const result = spawnSync(process.execPath, [path.join(root, "tools/package-addon.mjs"), "--output-dir", output],
+      { encoding: "utf8", maxBuffer: 256 * 1024 * 1024 });
+    assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+    const archive = fs.readdirSync(output).find((file) => file.endsWith(".mcaddon"));
+    const entries = readZipEntries(fs.readFileSync(path.join(output, archive)));
+    for (const [folder, source] of [["behavior_pack", "behavior_pack"], ["resource_pack", "resource_pack"]]) {
+      const name = [...entries.keys()].find((file) => file.startsWith(folder) && file.endsWith("/manifest.json"));
+      assert.deepEqual(entries.get(name), fs.readFileSync(path.join(root, source, "manifest.json")));
+    }
+    const behavior = JSON.parse(entries.get([...entries.keys()].find((file) => file.startsWith("behavior_pack") && file.endsWith("/manifest.json"))));
+    assert.equal(behavior.dependencies.find((dependency) => dependency.module_name).version, "2.11.0");
+  } finally {
+    fs.rmSync(output, { recursive: true, force: true });
+  }
+});
+
+test("archive inspector rejects array-form script dependency versions", () => {
+  const entries = new Map([
+    ["behavior_pack_bp/manifest.json", Buffer.from(JSON.stringify({
+      header: { uuid: "11111111-1111-4111-8111-111111111111", version: [0, 2, 0] },
+      modules: [{ type: "data", version: [0, 2, 0] }],
+      dependencies: [
+        { uuid: "22222222-2222-4222-8222-222222222222", version: [0, 2, 0] },
+        { module_name: "@minecraft/server", version: [2, 11, 0] },
+      ],
+    }))],
+    ["resource_pack_rp/manifest.json", Buffer.from(JSON.stringify({
+      header: { uuid: "22222222-2222-4222-8222-222222222222", version: [0, 2, 0] },
+      modules: [{ type: "resources", version: [0, 2, 0] }],
+    }))],
+  ]);
+  assert.ok(inspectAddonEntries(entries, "0.2.0").some((error) => error.includes("must be a string")));
 });
 
 test("archive inspector rejects version drift and non-runtime files", () => {

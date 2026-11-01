@@ -24,20 +24,20 @@ compare it to `sha256` in the matching metadata file.
 ## Record human evidence
 
 Copy [`verification/evidence-template.json`](./verification/evidence-template.json)
-to `docs/verification/evidence.json` only when recording actual test results.
-Follow [`ios-acceptance.md`](./ios-acceptance.md). Record candidate A's browser
-review and initial iOS installation, and candidate B's browser review and
-same-world iOS update. Include both candidates' revisions, versions, archive
-names, checksums, and pack UUIDs. Keep pending or failed results as such; do not
-invent evidence to make the gate pass.
+(schema version 2, subject `sinbad:cosmic_anomaly`) to
+`docs/verification/evidence.json` only when recording actual test results.
+Follow [`verification/cosmic-anomaly-acceptance.md`](./verification/cosmic-anomaly-acceptance.md).
+Record the single candidate's revision, version, archive name, checksum and pack
+UUIDs, a candidate-bound browser review (including `reviewed_archive_sha256`),
+and parent/child iOS results with tester, date, device, Minecraft version and
+the candidate checksum. Keep pending or failed results as such; do not invent
+evidence to make the gate pass. Old baseline-fixture evidence (schema version 1)
+is history and is rejected for a guardian candidate.
 
-A browser result is `passed` only after the actual mob model renders with its
-custom texture. WebGL availability, a listed entity, or successful loading of
-the vanilla source files is not sufficient. A human-reported render of the
-current source exists in
-[`verification/browser-review-2026-11-01.md`](./verification/browser-review-2026-11-01.md);
-the candidate-bound review must still be repeated or matched to CI archives. See
-[`tooling.md`](./tooling.md) for the vanilla geometry resolution investigation.
+A browser result is `passed` only after the actual guardian model renders with
+its texture; WebGL availability or a listed entity is not sufficient. Browser
+results never prove Bedrock behavior. See [`tooling.md`](./tooling.md) and
+[`cosmic-anomaly.md`](./cosmic-anomaly.md) for viewer limits.
 
 Validate a candidate and its evidence locally using the downloaded metadata and
 the committed evidence file:
@@ -49,7 +49,7 @@ node tools/validate-candidate.mjs dist/<archive>.mcaddon.metadata.json \
 ```
 
 The validator rejects dirty builds, mismatched revisions/checksums/UUIDs,
-invalid pack contents, and incomplete or failed browser/iOS evidence. The
+invalid pack contents, and incomplete, failed, unbound or baseline-era browser/iOS evidence. The
 passing evidence shape is also covered by a synthetic unit-test fixture; that
 fixture is not a claim that browser or device checks have been performed.
 

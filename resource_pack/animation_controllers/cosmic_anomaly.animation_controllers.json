@@ -1,0 +1,45 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.sinbad.cosmic_anomaly": {
+      "initial_state": "idle",
+      "states": {
+        "idle": {
+          "animations": [
+            "idle"
+          ],
+          "transitions": [
+            {
+              "dying": "q.property('sinbad:dying')"
+            },
+            {
+              "firing": "q.property('sinbad:firing')"
+            }
+          ],
+          "blend_transition": 0.2
+        },
+        "firing": {
+          "animations": [
+            "idle",
+            "fire"
+          ],
+          "transitions": [
+            {
+              "dying": "q.property('sinbad:dying')"
+            },
+            {
+              "idle": "!q.property('sinbad:firing')"
+            }
+          ],
+          "blend_transition": 0.1
+        },
+        "dying": {
+          "animations": [
+            "death"
+          ],
+          "blend_transition": 0.2
+        }
+      }
+    }
+  }
+}

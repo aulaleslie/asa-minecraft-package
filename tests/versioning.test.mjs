@@ -46,6 +46,9 @@ test("version command updates package, manifests, module dependencies, and catal
     }
     const behavior = JSON.parse(fs.readFileSync(path.join(dir, "behavior_pack/manifest.json"), "utf8"));
     assert.deepEqual(behavior.dependencies[0].version, nextVersion);
+    // The pinned script API dependency must keep its own version.
+    assert.equal(behavior.dependencies.find((dependency) => dependency.module_name)?.version, "2.11.0");
+    assert.equal(behavior.modules.find((module) => module.type === "script")?.uuid, "7b622970-e47b-45fa-bb34-fa12a6b3badd");
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

@@ -49,8 +49,8 @@ try {
   const resource = manifests.find(({ name }) => name === "resource");
   const behavior = manifests.find(({ name }) => name === "behavior");
   if (!resource || !behavior) throw new Error("Identity catalog must define behavior and resource packs.");
-  if (behavior.manifest.dependencies?.length !== 1 ||
-      behavior.manifest.dependencies[0].uuid !== resource.manifest.header.uuid) {
+  const packDependencies = (behavior.manifest.dependencies ?? []).filter((dependency) => dependency.uuid);
+  if (packDependencies.length !== 1 || packDependencies[0].uuid !== resource.manifest.header.uuid) {
     throw new Error("Behavior Pack dependency does not point to the Resource Pack.");
   }
 
@@ -62,7 +62,8 @@ try {
     entry.version = [...next];
     manifest.header.version = [...next];
     for (const module of manifest.modules ?? []) module.version = [...next];
-    for (const dependency of manifest.dependencies ?? []) dependency.version = [...next];
+    // Script module dependencies (module_name) keep their own pinned versions.
+    for (const dependency of manifest.dependencies ?? []) if (dependency.uuid) dependency.version = [...next];
   }
 
   fs.writeFileSync(packageFile, JSON.stringify(packageJson, null, 2) + "\n");

@@ -1,4 +1,4 @@
-import { inflateRawSync } from "node:zlib";
+import { crc32, deflateRawSync, inflateRawSync } from "node:zlib";
 
 const EOCD_SIGNATURE = 0x06054b50;
 const CENTRAL_SIGNATURE = 0x02014b50;
@@ -85,11 +85,15 @@ export function inspectAddonEntries(entries, version) {
   const resourceFolder = resource[0]?.folder;
   if (behaviorFolder && resourceFolder) {
     const required = [
-      `${behaviorFolder}entities/baseline_mob.json`,
-      `${resourceFolder}entity/baseline_mob.entity.json`,
-      `${resourceFolder}models/entity/baseline_mob.geo.json`,
-      `${resourceFolder}render_controllers/baseline_mob.render_controllers.json`,
-      `${resourceFolder}textures/entity/baseline_mob.png`,
+      `${behaviorFolder}entities/cosmic_anomaly.json`,
+      `${behaviorFolder}scripts/main.js`,
+      `${behaviorFolder}scripts/logic.js`,
+      `${resourceFolder}entity/cosmic_anomaly.entity.json`,
+      `${resourceFolder}models/entity/cosmic_anomaly.geo.json`,
+      `${resourceFolder}animations/cosmic_anomaly.animation.json`,
+      `${resourceFolder}animation_controllers/cosmic_anomaly.animation_controllers.json`,
+      `${resourceFolder}render_controllers/cosmic_anomaly.render_controllers.json`,
+      `${resourceFolder}textures/entity/cosmic_anomaly.tga`,
       `${resourceFolder}texts/en_US.lang`,
     ];
     for (const file of required) if (!entries.has(file)) errors.push(`Archive is missing required runtime file "${file}".`);
@@ -101,7 +105,12 @@ export function inspectAddonEntries(entries, version) {
         errors.push(`${name} version does not match ${version}.`);
       }
     }
-    const dependencies = behaviorManifest.dependencies ?? [];
+    for (const dependency of (behaviorManifest.dependencies ?? []).filter((entry) => entry.module_name)) {
+      if (typeof dependency.version !== "string") {
+        errors.push(`Archive script dependency "${dependency.module_name}" version must be a string, not ${JSON.stringify(dependency.version)}.`);
+      }
+    }
+    const dependencies = (behaviorManifest.dependencies ?? []).filter((dependency) => dependency.uuid);
     if (dependencies.length !== 1 || dependencies[0]?.uuid !== resourceManifest.header?.uuid ||
         JSON.stringify(dependencies[0]?.version) !== JSON.stringify(resourceManifest.header?.version)) {
       errors.push("Archive Behavior Pack dependency does not match the Resource Pack.");
@@ -118,4 +127,55 @@ export function inspectAddonEntries(entries, version) {
     }
   }
   return errors;
+}
+
+// Minimal deterministic ZIP writer (deflate, fixed timestamp). Used to restore
+// the source manifests after Creator Tools export, which rewrites script module
+// dependency versions from strings to arrays.
+export function writeZipEntries(entries) {
+  const locals = [];
+  const centrals = [];
+  let offset = 0;
+  for (const [name, data] of entries) {
+    const nameBytes = Buffer.from(name, "utf8");
+    const isDirectory = name.endsWith("/");
+    const body = isDirectory ? Buffer.alloc(0) : deflateRawSync(data);
+    const method = isDirectory ? 0 : 8;
+    const checksum = isDirectory ? 0 : crc32(data);
+    const local = Buffer.alloc(30);
+    local.writeUInt32LE(0x04034b50, 0);
+    local.writeUInt16LE(20, 4);
+    local.writeUInt16LE(0x0800, 6);
+    local.writeUInt16LE(method, 8);
+    local.writeUInt16LE(0, 10);
+    local.writeUInt16LE(0x21, 12);
+    local.writeUInt32LE(checksum, 14);
+    local.writeUInt32LE(body.length, 18);
+    local.writeUInt32LE(isDirectory ? 0 : data.length, 22);
+    local.writeUInt16LE(nameBytes.length, 26);
+    locals.push(local, nameBytes, body);
+    const central = Buffer.alloc(46);
+    central.writeUInt32LE(0x02014b50, 0);
+    central.writeUInt16LE(20, 4);
+    central.writeUInt16LE(20, 6);
+    central.writeUInt16LE(0x0800, 8);
+    central.writeUInt16LE(method, 10);
+    central.writeUInt16LE(0, 12);
+    central.writeUInt16LE(0x21, 14);
+    central.writeUInt32LE(checksum, 16);
+    central.writeUInt32LE(body.length, 20);
+    central.writeUInt32LE(isDirectory ? 0 : data.length, 24);
+    central.writeUInt16LE(nameBytes.length, 28);
+    central.writeUInt32LE(offset, 42);
+    centrals.push(central, nameBytes);
+    offset += local.length + nameBytes.length + body.length;
+  }
+  const centralBuffer = Buffer.concat(centrals);
+  const end = Buffer.alloc(22);
+  end.writeUInt32LE(0x06054b50, 0);
+  end.writeUInt16LE(entries.size, 8);
+  end.writeUInt16LE(entries.size, 10);
+  end.writeUInt32LE(centralBuffer.length, 12);
+  end.writeUInt32LE(offset, 16);
+  return Buffer.concat([...locals, centralBuffer, end]);
 }

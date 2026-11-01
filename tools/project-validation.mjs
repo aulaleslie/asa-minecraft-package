@@ -113,10 +113,28 @@ export function inspectProject(projectRoot) {
   const behaviorManifest = manifests.behavior;
   const resourceManifest = manifests.resource;
   const dependencies = behaviorManifest.dependencies ?? [];
-  if (dependencies.length !== 1 ||
-      dependencies[0]?.uuid !== resourceManifest.header?.uuid ||
-      !equalArray(dependencies[0]?.version, resourceManifest.header?.version)) {
+  const packDependencies = dependencies.filter((dependency) => dependency.uuid);
+  const moduleDependencies = dependencies.filter((dependency) => dependency.module_name);
+  if (packDependencies.length !== 1 ||
+      packDependencies[0]?.uuid !== resourceManifest.header?.uuid ||
+      !equalArray(packDependencies[0]?.version, resourceManifest.header?.version)) {
     errors.push("Behavior Pack must depend on the matching Resource Pack UUID and version.");
+  }
+  if (packDependencies.length + moduleDependencies.length !== dependencies.length) {
+    errors.push("Behavior Pack dependencies must each be a pack UUID or a script module_name dependency.");
+  }
+  const approvedModules = catalog.script?.dependencies ?? {};
+  for (const dependency of moduleDependencies) {
+    if (approvedModules[dependency.module_name] === undefined) {
+      errors.push(`Behavior Pack script dependency "${dependency.module_name}" is not approved in the identity catalog.`);
+    } else if (dependency.version !== approvedModules[dependency.module_name]) {
+      errors.push(`Behavior Pack dependency "${dependency.module_name}" version drifted from the identity catalog.`);
+    }
+  }
+  for (const name of Object.keys(approvedModules)) {
+    if (!moduleDependencies.some((dependency) => dependency.module_name === name)) {
+      errors.push(`Behavior Pack is missing the approved script dependency "${name}".`);
+    }
   }
   if ((resourceManifest.dependencies ?? []).length !== 0) {
     errors.push("Resource Pack must not depend back on the Behavior Pack.");
@@ -185,6 +203,83 @@ export function inspectProject(projectRoot) {
     }
   }
 
+  // A guardian that can die through the scripted sequence must stop moving:
+  // every behavior lives in a component group that sinbad:begin_dying removes,
+  // and those groups are added at spawn.
+  for (const [file, json] of parsedFiles.behavior) {
+    const entity = json?.["minecraft:entity"];
+    const dying = entity?.events?.["sinbad:begin_dying"];
+    if (!dying) continue;
+    const removed = new Set(dying.remove?.component_groups ?? []);
+    const spawned = new Set(entity.events?.["minecraft:entity_spawned"]?.add?.component_groups ?? []);
+    for (const key of Object.keys(entity.components ?? {})) {
+      if (key.startsWith("minecraft:behavior.")) {
+        errors.push(`${file}: "${key}" must live in a component group removed by sinbad:begin_dying so a dying guardian stops moving.`);
+      }
+    }
+    for (const [name, group] of Object.entries(entity.component_groups ?? {})) {
+      if (!Object.keys(group).some((key) => key.startsWith("minecraft:behavior."))) continue;
+      if (!removed.has(name)) errors.push(`${file}: behavior group "${name}" is not removed by sinbad:begin_dying.`);
+      if (!spawned.has(name)) errors.push(`${file}: behavior group "${name}" is not added by minecraft:entity_spawned.`);
+    }
+  }
+
+  const animationIds = new Set();
+  const controllerIds = new Set();
+  const controllerStates = new Map();
+  for (const [file, json] of parsedFiles.resource) {
+    if (file.includes("/animations/")) for (const id of Object.keys(json?.animations ?? {})) animationIds.add(id);
+    if (file.includes("/animation_controllers/")) {
+      for (const [id, controller] of Object.entries(json?.animation_controllers ?? {})) {
+        controllerIds.add(id);
+        controllerStates.set(id, controller);
+      }
+    }
+  }
+  const declaredProperties = new Set();
+  for (const [, json] of parsedFiles.behavior) {
+    for (const name of Object.keys(json?.["minecraft:entity"]?.description?.properties ?? {})) declaredProperties.add(name);
+  }
+  for (const [file, json] of parsedFiles.resource) {
+    const description = json?.["minecraft:client_entity"]?.description;
+    if (!description) continue;
+    const shortNames = new Set(Object.keys(description.animations ?? {}));
+    for (const [shortName, id] of Object.entries(description.animations ?? {})) {
+      if (!animationIds.has(id) && !controllerIds.has(id)) {
+        errors.push(`${description.identifier} animation "${shortName}" references missing animation or controller "${id}".`);
+      }
+    }
+    for (const entry of description.scripts?.animate ?? []) {
+      const name = typeof entry === "string" ? entry : Object.keys(entry)[0];
+      if (!shortNames.has(name)) errors.push(`${description.identifier} animates unknown animation "${name}".`);
+    }
+    for (const id of Object.values(description.animations ?? {})) {
+      for (const state of Object.values(controllerStates.get(id)?.states ?? {})) {
+        for (const entry of state.animations ?? []) {
+          const name = typeof entry === "string" ? entry : Object.keys(entry)[0];
+          if (!shortNames.has(name)) errors.push(`${description.identifier} controller "${id}" references unknown animation "${name}".`);
+        }
+      }
+    }
+    const effects = new Set(Object.keys(description.sound_effects ?? {}));
+    for (const [animationId, animation] of Object.entries(
+      Object.assign({}, ...parsedFiles.resource.filter(([f]) => f.includes("/animations/")).map(([, j]) => j.animations ?? {})))) {
+      if (!Object.values(description.animations ?? {}).includes(animationId)) continue;
+      for (const key of Object.values(animation.sound_effects ?? {}).flatMap((value) => [].concat(value))) {
+        if (key?.effect && !effects.has(key.effect)) {
+          errors.push(`${description.identifier} animation "${animationId}" plays undeclared sound effect "${key.effect}".`);
+        }
+      }
+    }
+    for (const id of Object.values(description.animations ?? {})) {
+      const text = JSON.stringify(controllerStates.get(id) ?? {});
+      for (const match of text.matchAll(/q(?:uery)?\.property\('([^']+)'\)/g)) {
+        if (!declaredProperties.has(match[1])) errors.push(`${description.identifier} controller "${id}" reads undeclared entity property "${match[1]}".`);
+      }
+    }
+    void file;
+  }
+
   const language = path.join(packDirs.resource, "texts", "en_US.lang");
   const languageText = fs.existsSync(language) ? fs.readFileSync(language, "utf8") : "";
   for (const [id, file] of behaviorEntities) {
@@ -195,17 +290,36 @@ export function inspectProject(projectRoot) {
     }
   }
   if (listFiles(path.join(packDirs.behavior, "spawn_rules")).length) {
-    errors.push("Natural spawn rules are not allowed in the baseline fixture.");
+    errors.push("Natural spawn rules are not allowed; the guardian is placed only with its Creative spawn egg.");
   }
-  if ([...listFiles(packDirs.behavior), ...listFiles(packDirs.resource)].some((file) => /\.(js|ts)$/i.test(file))) {
-    errors.push("Gameplay scripts are not allowed in the baseline fixture.");
+  const scriptModules = (behaviorManifest.modules ?? []).filter((module) => module.type === "script");
+  const approvedScripts = new Set((catalog.script?.files ?? []).map((file) => `behavior_pack/${file}`));
+  const scriptFiles = [...listFiles(packDirs.behavior), ...listFiles(packDirs.resource)]
+    .filter((file) => /\.(js|mjs|cjs|ts)$/i.test(file))
+    .map((file) => path.relative(root, file).split(path.sep).join("/"));
+  for (const file of scriptFiles) {
+    if (!approvedScripts.has(file)) errors.push(`Script file "${file}" is not an approved gameplay script.`);
+  }
+  if (scriptModules.length > 1) errors.push("Behavior Pack must declare at most one script module.");
+  if (scriptModules.length === 1) {
+    const [module] = scriptModules;
+    if (module.language !== "javascript") errors.push("Script module language must be javascript.");
+    if (module.entry !== catalog.script?.entry) errors.push("Script module entry does not match the identity catalog.");
+    if (!fs.existsSync(path.join(packDirs.behavior, String(module.entry ?? "")))) {
+      errors.push(`Script module entry "${module.entry}" is missing from the Behavior Pack.`);
+    }
+    for (const file of approvedScripts) {
+      if (!fs.existsSync(path.join(root, file))) errors.push(`Approved script file "${file}" is missing.`);
+    }
+  } else if (scriptFiles.length || moduleDependencies.length) {
+    errors.push("Script files or script dependencies require the Behavior Pack script module.");
   }
   for (const [, json] of parsedFiles.behavior) {
     const entityJson = json?.["minecraft:entity"];
     if (!entityJson) continue;
     const serialized = JSON.stringify(entityJson);
     if (/minecraft:behavior\.(?:melee_attack|ranged_attack|nearest_attackable_target|hurt_by_target)/.test(serialized)) {
-      errors.push("Baseline mob must remain passive and must not have attack or target behaviors.");
+      errors.push("Native attack and target behaviors are not allowed; protective combat is limited to the approved script.");
     }
   }
 
